@@ -6,6 +6,10 @@
       "include_dirs": [
         "gwenhywfar/gwenhywfar4",
         "aqbanking/aqbanking5"
+      ],
+      "libraries": [
+        "-laqbanking",
+        '-lgwenhywfar'
       ]
     }
   ]
