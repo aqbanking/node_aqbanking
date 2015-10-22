@@ -1,0 +1,6 @@
+[submodule "aqbanking"]
+	path = aqbanking
+	url = https://github.com/Zauberstuhl/aqbanking.git
+[submodule "gwenhywfar"]
+	path = gwenhywfar
+	url = https://github.com/Zauberstuhl/gwenhywfar.git
