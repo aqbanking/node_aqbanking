@@ -7,12 +7,12 @@
         "src/ab_gui_interface.cc"
       ],
       "include_dirs": [
-        "gwenhywfar/gwenhywfar4",
-        "aqbanking/aqbanking5"
+        "/usr/include/aqbanking5",
+        "/usr/include/gwenhywfar4"
       ],
       "libraries": [
-        "-laqbanking",
-        '-lgwenhywfar'
+        "-L/usr/lib",
+        "-laqbanking"
       ]
     }
   ]

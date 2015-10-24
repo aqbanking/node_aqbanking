@@ -1,12 +1,35 @@
-Unholy Banking
-==============
+# Unholy Banking
 
 Aqbanking wrapper plugin for nodejs
 
-Build
-------
+## Dependencies
 
-    git submodule update --init
-    cd gwenhywfar && ./configure && make
-    cd aqbanking && ./configure && make
-    npm install
+Make sure you run the latest nodejs version:
+
+    $ nodejs -v
+    v4.2.1
+
+You can compile and install gwenhywfar and aqbanking from source:
+
+    $ export ACLOCAL=$(which aclocal) && export AUTOMAKE=$(which automake)
+    $ git submodule update --init
+    $ cd gwenhywfar \
+    ./configure && make \
+    sudo make install \
+    cd ../aqbanking \
+    ./configure && make
+    $ sudo make install
+
+or search and install it via package manager:
+
+### Debian
+
+    $ apt-get install gwenhywfar-tools aqbanking-tools
+
+### Arch
+
+    $ pacman -Sy aqbanking
+
+## Build
+
+    $ npm install
