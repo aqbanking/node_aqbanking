@@ -24,7 +24,7 @@ or search and install it via package manager:
 
 ### Debian
 
-    $ apt-get install gwenhywfar-tools aqbanking-tools
+    $ apt-get install libaqbanking-dev libgwenhywfar-dev
 
 ### Arch
 
