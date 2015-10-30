@@ -19,6 +19,7 @@
 #ifndef UBHELPER_H
 #define UBHELPER_H
 
+#include <v8.h>
 #include <aqbanking/banking.h>
 
 namespace UB {
@@ -44,7 +45,7 @@ namespace UB {
       }
       int close(void); // free
       int transactions(AB_ACCOUNT *);
-      int list_accounts(void);
+      v8::Local<v8::Object> list_accounts(v8::Isolate *);
   };
 }
 

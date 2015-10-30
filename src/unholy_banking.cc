@@ -26,20 +26,21 @@
 using namespace std;
 using namespace v8;
 
-void AB_transactions(const v8::FunctionCallbackInfo<Value>& args) {
+void AB_listaccounts(const v8::FunctionCallbackInfo<Value>& args) {
   UB::Helper helper;
-  int rv = helper.close();
-
-  cout << "close() return value: " << rv << endl;
+  Isolate* isolate = args.GetIsolate();
+  args.GetReturnValue().Set(helper.list_accounts(isolate));
+  // close class and free stuff
+  if (helper.close() != 0) {
+    cout << "Something went wrong while closing.." << endl;
+  }
 }
 
 void Init(Handle<Object> exports) {
   Isolate* isolate = Isolate::GetCurrent();
-  //invalid conversion from
-  //‘int (*)(const v8::FunctionCallbackInfo<v8::Value>&)’ to
-  //‘v8::FunctionCallback {aka void (*)(const v8::FunctionCallbackInfo<v8::Value>&)}’ [-fpermissive]
-  exports->Set(String::NewFromUtf8(isolate, "getTransactions"),
-      FunctionTemplate::New(isolate, AB_transactions)->GetFunction());
+  // register listAccounts function
+  exports->Set(String::NewFromUtf8(isolate, "listAccounts"),
+      FunctionTemplate::New(isolate, AB_listaccounts)->GetFunction());
 }
 
 NODE_MODULE(unholy_banking, Init)

@@ -18,4 +18,19 @@
 
 var addon = require('bindings')('unholy_banking');
 
-console.log(addon.getTransactions());
+/*
+ * listAccounts()
+ *
+ * returns all configured accounts on the system:
+ */
+console.log(addon.listAccounts());
+/* Output:
+ *
+ * { '0':
+ *   { accountNumber: '1234567890',
+ *     bankCode: '66050101',
+ *     bankName: 'Sparkasse Karlsruhe Ettlingen',
+ *     accountName: 'Sichteinlagen' } }
+ */
+
+//console.log(addon.getTransactions());

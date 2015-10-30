@@ -18,6 +18,9 @@
 
 #include <iostream>
 
+#include <node.h>
+#include <v8.h>
+
 #include <gwenhywfar/cgui.h>
 #include <gwenhywfar/gui_be.h>
 
@@ -69,39 +72,46 @@ int UB::Helper::close(void) {
   }
 
   AB_Banking_free(ab);
+
   return 0;
 }
 
-int UB::Helper::list_accounts(void) {
-  //int rv;
+v8::Local<v8::Object> UB::Helper::list_accounts(v8::Isolate * isolate) {
+  v8::EscapableHandleScope scope(isolate);
+  v8::Local<v8::Object> res = v8::Object::New(isolate);
+
   AB_ACCOUNT_LIST2 *accs;
-  //aqbanking_Account *account;
 
   accs = AB_Banking_GetAccounts(ab);
   if (accs) {
     AB_ACCOUNT_LIST2_ITERATOR *it;
-    it=AB_Account_List2_First(accs);
+    it = AB_Account_List2_First(accs);
     if (it) {
       AB_ACCOUNT *a;
-      a=AB_Account_List2Iterator_Data(it);
-      cout << "enter while:" << endl;
+      int cnt = 0;
+      a = AB_Account_List2Iterator_Data(it);
       while(a) {
-        AB_PROVIDER *pro = AB_Account_GetProvider(a);
-        //AB_Account_GetAccountNumber(a));
-        //AB_Account_GetAccountName(a));
-        //AB_Provider_GetName(pro));
-        //AB_Account_GetBankCode(a));
-        //AB_Account_GetBankName(a));
-        cout << AB_Account_GetAccountNumber(a) << endl;
-        cout << AB_Account_GetBankCode(a) << endl;
+        v8::Local<v8::Object> e = v8::Object::New(isolate);
+
+        e->Set(v8::String::NewFromUtf8(isolate, "accountNumber"),
+            v8::String::NewFromUtf8(isolate, AB_Account_GetAccountNumber(a)));
+        e->Set(v8::String::NewFromUtf8(isolate, "bankCode"),
+            v8::String::NewFromUtf8(isolate, AB_Account_GetBankCode(a)));
+        e->Set(v8::String::NewFromUtf8(isolate, "bankName"),
+            v8::String::NewFromUtf8(isolate, AB_Account_GetBankName(a)));
+        e->Set(v8::String::NewFromUtf8(isolate, "accountName"),
+            v8::String::NewFromUtf8(isolate, AB_Account_GetAccountName(a)));
+
+        res->Set(cnt, e);
 
         a = AB_Account_List2Iterator_Next(it);
+        cnt++;
       }
       AB_Account_List2Iterator_free(it);
     }
     AB_Account_List2_free(accs);
   }
-  return 0;
+  return scope.Escape(res);
 }
 
 int UB::Helper::transactions(AB_ACCOUNT * a) {
@@ -149,7 +159,7 @@ int UB::Helper::transactions(AB_ACCOUNT * a) {
     while(t) {
       const AB_VALUE *v;
       //AB_TRANSACTION_STATUS state;
-      v=AB_Transaction_GetValue(t);
+      v = AB_Transaction_GetValue(t);
       if (v) {
         const GWEN_STRINGLIST *sl;
         const GWEN_TIME *tdtime;
