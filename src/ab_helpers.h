@@ -16,30 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <node.h>
-#include <v8.h>
+#ifndef UBHELPER_H
+#define UBHELPER_H
 
-#include <iostream>
+#include <aqbanking/banking.h>
 
-#include "ab_helpers.h"
+namespace UB {
+  class Helper {
+    private:
+      AB_BANKING * ab;
+      GWEN_GUI * gui;
 
-using namespace std;
-using namespace v8;
+      typedef struct {
+        int * no;
+        char * name;
+        char * description;
+        int * bank_code;
+        char * bank_name;
 
-void AB_transactions(const v8::FunctionCallbackInfo<Value>& args) {
-  UB::Helper helper;
-  int rv = helper.close();
+        AB_BANKING *ab;
+      } aqbanking_Account;
 
-  cout << "close() return value: " << rv << endl;
+      int init(void);
+    public:
+      Helper() {
+        init();
+      }
+      int close(void); // free
+      int transactions(AB_ACCOUNT *);
+      int list_accounts(void);
+  };
 }
 
-void Init(Handle<Object> exports) {
-  Isolate* isolate = Isolate::GetCurrent();
-  //invalid conversion from
-  //‘int (*)(const v8::FunctionCallbackInfo<v8::Value>&)’ to
-  //‘v8::FunctionCallback {aka void (*)(const v8::FunctionCallbackInfo<v8::Value>&)}’ [-fpermissive]
-  exports->Set(String::NewFromUtf8(isolate, "getTransactions"),
-      FunctionTemplate::New(isolate, AB_transactions)->GetFunction());
-}
-
-NODE_MODULE(unholy_banking, Init)
+#endif
