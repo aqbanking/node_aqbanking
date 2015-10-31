@@ -46,7 +46,7 @@ namespace UB {
       int close(void); // free
       AB_ACCOUNT * find_account(const char *, const char *);
       v8::Local<v8::Array> transactions(AB_ACCOUNT *, v8::Isolate *);
-      v8::Local<v8::Object> list_accounts(v8::Isolate *);
+      v8::Local<v8::Array> list_accounts(v8::Isolate *);
   };
 }
 

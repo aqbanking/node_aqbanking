@@ -82,9 +82,9 @@ AB_ACCOUNT * UB::Helper::find_account(const char * account_number, const char * 
   );
 }
 
-v8::Local<v8::Object> UB::Helper::list_accounts(v8::Isolate * isolate) {
+v8::Local<v8::Array> UB::Helper::list_accounts(v8::Isolate * isolate) {
   v8::EscapableHandleScope scope(isolate);
-  v8::Local<v8::Object> res = v8::Object::New(isolate);
+  v8::Local<v8::Array> res = v8::Array::New(isolate);
 
   AB_ACCOUNT_LIST2 *accs;
 
@@ -97,18 +97,18 @@ v8::Local<v8::Object> UB::Helper::list_accounts(v8::Isolate * isolate) {
       int cnt = 0;
       a = AB_Account_List2Iterator_Data(it);
       while(a) {
-        v8::Local<v8::Object> e = v8::Object::New(isolate);
+        v8::Local<v8::Object> entry = v8::Object::New(isolate);
 
-        e->Set(v8::String::NewFromUtf8(isolate, "accountNumber"),
+        entry->Set(v8::String::NewFromUtf8(isolate, "accountNumber"),
             v8::String::NewFromUtf8(isolate, AB_Account_GetAccountNumber(a)));
-        e->Set(v8::String::NewFromUtf8(isolate, "bankCode"),
+        entry->Set(v8::String::NewFromUtf8(isolate, "bankCode"),
             v8::String::NewFromUtf8(isolate, AB_Account_GetBankCode(a)));
-        e->Set(v8::String::NewFromUtf8(isolate, "bankName"),
+        entry->Set(v8::String::NewFromUtf8(isolate, "bankName"),
             v8::String::NewFromUtf8(isolate, AB_Account_GetBankName(a)));
-        e->Set(v8::String::NewFromUtf8(isolate, "accountName"),
+        entry->Set(v8::String::NewFromUtf8(isolate, "accountName"),
             v8::String::NewFromUtf8(isolate, AB_Account_GetAccountName(a)));
 
-        res->Set(cnt, e);
+        res->Set(cnt, entry);
 
         a = AB_Account_List2Iterator_Next(it);
         cnt++;
