@@ -1,9 +1,8 @@
 {
-  "name": "unholy_banking",
-  "version": "0.0.1",
+  "name": "aqbanking",
+  "version": "0.0.1-alpha.1",
   "description": "Aqbanking wrapper plugin for nodejs",
   "main": "unholy_banking.js",
-  "private": true,
   "scripts": {
     "test": "node unholy_banking.js"
   },
