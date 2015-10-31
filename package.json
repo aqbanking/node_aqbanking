@@ -2,9 +2,23 @@
   "name": "aqbanking",
   "version": "0.0.1-alpha.1",
   "description": "Aqbanking wrapper plugin for nodejs",
+  "author": "Lukas Matt <lukas@zauberstuhl.de>",
+  "keywords": [
+    "aqbanking",
+    "wrapper",
+    "plugin"
+  ],
   "main": "unholy_banking.js",
   "scripts": {
     "test": "node unholy_banking.js"
+  },
+  "license": "GPL-3.0",
+  "repository": {
+    "type": "git",
+    "url" : "https://github.com/Zauberstuhl/unholy_banking.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Zauberstuhl/unholy_banking/issues"
   },
   "gypfile": true,
   "dependencies": {
