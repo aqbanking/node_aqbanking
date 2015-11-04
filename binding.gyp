@@ -13,7 +13,8 @@
       ],
       "libraries": [
         "-L/usr/lib",
-        "-laqbanking"
+        "-laqbanking",
+        "-laqhbci"
       ]
     }
   ]
