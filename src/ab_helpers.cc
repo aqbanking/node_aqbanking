@@ -31,6 +31,8 @@
 #include "ab_helpers.h"
 #include "ab_gui_interface.h"
 
+#include "ab_add_user.cc"
+
 using namespace std;
 
 int UB::Helper::init(void) {

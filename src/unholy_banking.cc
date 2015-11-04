@@ -27,6 +27,41 @@
 using namespace std;
 using namespace v8;
 
+void AB_createuser(const v8::FunctionCallbackInfo<Value>& args) {
+  Isolate* isolate = args.GetIsolate();
+
+  Local<Value> bankId = args[0], userId = args[1], customerId = args[2];
+  Local<Value> server = args[3], userName = args[4];
+  if (!bankId->IsString() || !userId->IsString() ||
+      !customerId->IsString() || !server->IsString() ||
+      !userName->IsString()) {
+
+    cout << "Please provide bankId, userId, customerId, server and userName as String-parameter!" << endl;
+    return;
+  }
+
+  v8::String::Utf8Value bankId8(bankId->ToString(isolate)),
+    userId8(userId->ToString(isolate)),
+    customerId8(customerId->ToString(isolate)),
+    server8(server->ToString(isolate)),
+    userName8(userName->ToString(isolate));
+
+  UB::User user;
+  UB::Helper helper;
+
+  user.bankId = string(*bankId8).c_str();
+  user.userId = string(*userId8).c_str();
+  user.customerId = string(*customerId8).c_str();
+  user.server = string(*server8).c_str();
+  user.userName = string(*userName8).c_str();
+
+  args.GetReturnValue().Set(helper.add_user(&user));
+  // close class and free stuff
+  if (helper.close() != 0) {
+    cout << "Something went wrong while closing.." << endl;
+  }
+}
+
 void AB_listaccounts(const v8::FunctionCallbackInfo<Value>& args) {
   UB::Helper helper;
   Isolate* isolate = args.GetIsolate();
@@ -64,6 +99,9 @@ void AB_getransactions(const v8::FunctionCallbackInfo<Value>& args) {
 
 void Init(Handle<Object> exports) {
   Isolate* isolate = Isolate::GetCurrent();
+  // register createUser function
+  exports->Set(String::NewFromUtf8(isolate, "createUser"),
+      FunctionTemplate::New(isolate, AB_createuser)->GetFunction());
   // register listAccounts function
   exports->Set(String::NewFromUtf8(isolate, "listAccounts"),
       FunctionTemplate::New(isolate, AB_listaccounts)->GetFunction());

@@ -50,3 +50,24 @@ var accountNumber = '1234567890';
 var bankCode = '66050101';
 console.log(addon.getTransactions(accountNumber, bankCode));
 
+/*
+ * createUser(...)
+ *
+ * bankId - Bank code
+ * userId - Unique user identifier e.g. TEST01
+ * customerId - Unique customer identifier e.g. KUNDE01
+ * server - Server address (bank backend)
+ * userName - Username e.g. unholybanking
+ *
+ * returns zero if the user was created successfully
+ */
+var bankId = "80007777";
+var userId = "TEST01";
+var customerId = "KUNDE01";
+var server = "www.hora-obscura.de/pintan/PinTanServlet";
+var userName = "unholybanking";
+if (addon.createUser(bankId, userId, customerId, server, userName) == 0) {
+  console.log("User was created successfully!");
+} else {
+  console.log("User exists or something went wrong..");
+}
