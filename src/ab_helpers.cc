@@ -31,7 +31,9 @@
 #include "ab_helpers.h"
 #include "ab_gui_interface.h"
 
+// aqhcbi-tool
 #include "ab_add_user.cc"
+#include "ab_add_account.cc"
 
 using namespace std;
 

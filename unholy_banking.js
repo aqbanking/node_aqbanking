@@ -71,3 +71,21 @@ if (addon.createUser(bankId, userId, customerId, server, userName) == 0) {
 } else {
   console.log("User exists or something went wrong..");
 }
+
+/*
+ * createAccount(...)
+ *
+ * bankId - Bank code
+ * customerId - Unique customer identifier e.g. KUNDE01
+ * accountId - Bank unique account identifier
+ *
+ * returns zero if the account was added successfully
+ */
+var bankId = "80007777";
+var customerId = "KUNDE01";
+var accountId = "1234567890";
+if (addon.createAccount(bankId, customerId, accountId)) {
+  console.log("Account was added to "+customerId);
+} else {
+  console.log("Something went wrong!");
+}

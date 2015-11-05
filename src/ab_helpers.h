@@ -31,6 +31,12 @@ namespace UB {
     const char * userName;
   } User;
 
+  typedef struct {
+    const char * bankId;
+    const char * customerId;
+    const char * accountId;
+  } UserAccount;
+
   class Helper {
     private:
       AB_BANKING * ab;
@@ -44,6 +50,7 @@ namespace UB {
 
       int close(void); // free
       int add_user(UB::User *);
+      int add_account(UB::UserAccount *);
       AB_ACCOUNT * find_account(const char *, const char *);
       v8::Local<v8::Array> transactions(AB_ACCOUNT *, v8::Isolate *);
       v8::Local<v8::Array> list_accounts(v8::Isolate *);
