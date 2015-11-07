@@ -40,14 +40,16 @@ void AB_createaccount(const v8::FunctionCallbackInfo<Value>& args) {
     customerId8(customerId->ToString(isolate)),
     accountId8(accountId->ToString(isolate));
 
-  UB::UserAccount user_account;
   UB::Helper helper;
 
-  user_account.bankId = string(*bankId8).c_str();
-  user_account.customerId = string(*customerId8).c_str();
-  user_account.accountId = string(*accountId8).c_str();
+  int rv = helper.add_account(
+    string(*bankId8).c_str(),
+    string(*customerId8).c_str(),
+    string(*accountId8).c_str()
+  );
 
-  args.GetReturnValue().Set(helper.add_account(&user_account));
+  args.GetReturnValue().Set(rv);
+
   // close class and free stuff
   if (helper.close() != 0) {
     cout << "Something went wrong while closing.." << endl;
@@ -73,16 +75,18 @@ void AB_createuser(const v8::FunctionCallbackInfo<Value>& args) {
     server8(server->ToString(isolate)),
     userName8(userName->ToString(isolate));
 
-  UB::User user;
   UB::Helper helper;
 
-  user.bankId = string(*bankId8).c_str();
-  user.userId = string(*userId8).c_str();
-  user.customerId = string(*customerId8).c_str();
-  user.server = string(*server8).c_str();
-  user.userName = string(*userName8).c_str();
+  int rv = helper.add_user(
+    string(*bankId8).c_str(),
+    string(*userId8).c_str(),
+    string(*customerId8).c_str(),
+    string(*server8).c_str(),
+    string(*userName8).c_str()
+  );
 
-  args.GetReturnValue().Set(helper.add_user(&user));
+  args.GetReturnValue().Set(rv);
+
   // close class and free stuff
   if (helper.close() != 0) {
     cout << "Something went wrong while closing.." << endl;

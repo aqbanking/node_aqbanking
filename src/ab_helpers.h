@@ -23,20 +23,6 @@
 #include <aqbanking/banking.h>
 
 namespace UB {
-  typedef struct {
-    const char * bankId;
-    const char * userId;
-    const char * customerId;
-    const char * server;
-    const char * userName;
-  } User;
-
-  typedef struct {
-    const char * bankId;
-    const char * customerId;
-    const char * accountId;
-  } UserAccount;
-
   class Helper {
     private:
       AB_BANKING * ab;
@@ -49,8 +35,18 @@ namespace UB {
       }
 
       int close(void); // free
-      int add_user(UB::User *);
-      int add_account(UB::UserAccount *);
+      int add_user(
+        const char *,
+        const char *,
+        const char *,
+        const char *,
+        const char *
+      );
+      int add_account(
+        const char *,
+        const char *,
+        const char *
+      );
       AB_ACCOUNT * find_account(const char *, const char *);
       v8::Local<v8::Array> transactions(AB_ACCOUNT *, v8::Isolate *);
       v8::Local<v8::Array> list_accounts(v8::Isolate *);

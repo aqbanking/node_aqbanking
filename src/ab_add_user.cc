@@ -69,13 +69,16 @@ int getBankUrl(AB_BANKING *ab, AH_CRYPT_MODE cm,
   return -1;
 }
 
-int UB::Helper::add_user(UB::User * user) {
+int UB::Helper::add_user(const char * bankId,
+    const char * userId, const char * customerId,
+    const char * server, const char * userName) {
+
   AB_PROVIDER * pro;
   GWEN_BUFFER * nameBuffer = NULL;
 
   pro = AB_Banking_GetProvider(this->ab, "aqhbci");
   assert(pro);
-  assert(user->userName);
+  assert(userName);
 
   const char * lbankId;
   const char * luserId;
@@ -85,10 +88,10 @@ int UB::Helper::add_user(UB::User * user) {
   GWEN_URL * url;
   AB_USER * ab_user;
 
-  lbankId = user->bankId;
-  luserId = user->userId;
-  lcustomerId = user->customerId?user->customerId:luserId;
-  lserverAddr = user->server;
+  lbankId = bankId;
+  luserId = userId;
+  lcustomerId = customerId?customerId:luserId;
+  lserverAddr = server;
   cm = AH_CryptMode_Pintan;
 
   if (!lbankId || !*lbankId) {
@@ -112,7 +115,7 @@ int UB::Helper::add_user(UB::User * user) {
   ab_user = AB_Banking_CreateUser(this->ab, AH_PROVIDER_NAME);
   assert(ab_user);
 
-  AB_User_SetUserName(ab_user, user->userName);
+  AB_User_SetUserName(ab_user, userName);
   AB_User_SetCountry(ab_user, "de");
   AB_User_SetBankCode(ab_user, lbankId);
   AB_User_SetUserId(ab_user, luserId);
