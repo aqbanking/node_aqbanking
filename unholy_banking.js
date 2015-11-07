@@ -18,6 +18,46 @@
 
 var addon = require('bindings')('unholy_banking');
 
+var accountNumber = '1234567890';
+var bankCode = '9987665';
+var userId = "TEST01";
+var customerId = "KUNDE01";
+var server = "https://hbci-pintan-bw.s-hbci.de/PinTanServlet;";
+var userName = "unholybanking";
+
+/*
+ * createUser(...)
+ *
+ * bankId - Bank code
+ * userId - Unique user identifier e.g. TEST01
+ * customerId - Unique customer identifier e.g. KUNDE01
+ * server - Server address (bank backend)
+ * userName - Username e.g. unholybanking
+ *
+ * returns zero if the user was created successfully
+ */
+if (addon.createUser(bankCode, userId, customerId, server, userName) == 0) {
+  console.log("User was created successfully!");
+} else {
+  console.log("User exists or something went wrong..");
+}
+
+/*
+ * createAccount(...)
+ *
+ * bankId - Bank code
+ * customerId - Unique customer identifier e.g. KUNDE01
+ * accountId - Bank unique account identifier
+ *
+ * returns zero if the account was added successfully
+ */
+var rv = addon.createAccount(bankCode, accountNumber, customerId);
+if (!rv) {
+  console.log("Account was added to "+customerId);
+} else {
+  console.log("Something went wrong! "+ rv);
+}
+
 /*
  * listAccounts()
  *
@@ -46,46 +86,4 @@ console.log(addon.listAccounts());
  *   value: -50,
  *   currency: 'EUR' } ]
  */
-var accountNumber = '1234567890';
-var bankCode = '66050101';
 console.log(addon.getTransactions(accountNumber, bankCode));
-
-/*
- * createUser(...)
- *
- * bankId - Bank code
- * userId - Unique user identifier e.g. TEST01
- * customerId - Unique customer identifier e.g. KUNDE01
- * server - Server address (bank backend)
- * userName - Username e.g. unholybanking
- *
- * returns zero if the user was created successfully
- */
-var bankId = "80007777";
-var userId = "TEST01";
-var customerId = "KUNDE01";
-var server = "www.hora-obscura.de/pintan/PinTanServlet";
-var userName = "unholybanking";
-if (addon.createUser(bankId, userId, customerId, server, userName) == 0) {
-  console.log("User was created successfully!");
-} else {
-  console.log("User exists or something went wrong..");
-}
-
-/*
- * createAccount(...)
- *
- * bankId - Bank code
- * customerId - Unique customer identifier e.g. KUNDE01
- * accountId - Bank unique account identifier
- *
- * returns zero if the account was added successfully
- */
-var bankId = "80007777";
-var customerId = "KUNDE01";
-var accountId = "1234567890";
-if (addon.createAccount(bankId, customerId, accountId)) {
-  console.log("Account was added to "+customerId);
-} else {
-  console.log("Something went wrong!");
-}
