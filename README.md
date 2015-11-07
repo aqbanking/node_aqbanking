@@ -2,6 +2,8 @@
 
 Aqbanking wrapper plugin for nodejs
 
+A list for supported banks: http://www.linuxwiki.de/OpenHBCI/GetesteteBanken
+
 ## Dependencies
 
 Make sure you run the latest nodejs version:
