@@ -29,5 +29,5 @@ int CUSTOM_GETPASSWORD_FN (GWEN_GUI *, unsigned int flags, const char * token,
 }
 
 int CUSTOM_CHECKCERT_FN (GWEN_GUI *, const GWEN_SSLCERTDESCR * cd, GWEN_SYNCIO * sio, unsigned int id) {
-  return 0;
+  return 1;
 }

@@ -13,6 +13,8 @@
  *          Please see toplevel file COPYING for license details           *
  ***************************************************************************/
 
+#include <iostream>
+
 #include <aqbanking/banking.h>
 #include <aqbanking/banking_be.h>
 
@@ -24,6 +26,8 @@
 #include <fcntl.h>
 #include <string.h>
 #include <errno.h>
+
+using namespace std;
 
 int getBankUrl(AB_BANKING *ab, AH_CRYPT_MODE cm,
     const char *bankId, GWEN_BUFFER *bufServer) {
@@ -95,12 +99,12 @@ int UB::Helper::add_user(const char * bankId,
   cm = AH_CryptMode_Pintan;
 
   if (!lbankId || !*lbankId) {
-    //DBG_ERROR(0, "No bank id stored and none given");
+    cout << "No bank id stored and none given" << endl;
     GWEN_Buffer_free(nameBuffer);
     return 3;
   }
   if (!luserId || !*luserId) {
-    //DBG_ERROR(0, "No user id (Benutzerkennung) stored and none given");
+    cout << "No user id (Benutzerkennung) stored and none given" << endl;
     GWEN_Buffer_free(nameBuffer);
     return 3;
   }
@@ -108,7 +112,7 @@ int UB::Helper::add_user(const char * bankId,
   ab_user = AB_Banking_FindUser(this->ab, AH_PROVIDER_NAME,
       "de", lbankId, luserId, lcustomerId);
   if (ab_user) {
-    //DBG_ERROR(0, "User %s already exists", luserId);
+    cout << "User already exists" << endl;
     return 3;
   }
 
@@ -123,13 +127,13 @@ int UB::Helper::add_user(const char * bankId,
   const char * pt = "pintan";
   AH_User_SetTokenType(ab_user, pt);
   AH_User_SetTokenName(ab_user, NULL);
-  AH_User_SetTokenContextId(ab_user, 0); // ??? TODO
+  AH_User_SetTokenContextId(ab_user, 100); // ??? TODO
   AH_User_SetCryptMode(ab_user, cm);
 
 
   //if (rdhType>0)
   //  AH_User_SetRdhType(user, rdhType);
-  AH_User_SetRdhType(ab_user, 1); // TODO check correct val
+  AH_User_SetRdhType(ab_user, 1000); // TODO check correct val
   GWEN_Buffer_free(nameBuffer);
 
   //if (hbciVersion==0) {
@@ -152,17 +156,15 @@ int UB::Helper::add_user(const char * bankId,
 
     tbuf=GWEN_Buffer_new(0, 256, 0, 1);
     if (getBankUrl(this->ab, cm, lbankId, tbuf)) {
-      //DBG_INFO(0, "Could not find server address for \"%s\"",
-      //lbankId);
+      cout << "Could not find server address" << endl;
     }
     if (GWEN_Buffer_GetUsedBytes(tbuf)==0) {
-      //DBG_ERROR(0, "No address given and none available in internal db");
+      cout << "No address given and none available in internal db" << endl;
       return 3;
     }
     url=GWEN_Url_fromString(GWEN_Buffer_GetStart(tbuf));
     if (url==NULL) {
-      //DBG_ERROR(0, "Bad URL \"%s\" in internal db",
-      //GWEN_Buffer_GetStart(tbuf));
+      cout << "Bad URL in internal db" << endl;
       return 3;
     }
     GWEN_Buffer_free(tbuf);
@@ -171,7 +173,7 @@ int UB::Helper::add_user(const char * bankId,
     /* set address */
     url=GWEN_Url_fromString(lserverAddr);
     if (url==NULL) {
-      //DBG_ERROR(0, "Bad URL \"%s\"", lserverAddr);
+      cout << "Bad URL" << endl;
       return 3;
     }
   }

@@ -91,10 +91,7 @@ int UB::Helper::add_account(const char * bankId,
     account = AB_Banking_CreateAccount(this->ab, "aqhbci");
     assert(account);
 
-    if (!ownerName)
-      AB_Account_SetOwnerName(account, AB_User_GetUserName(u));
-    else
-      AB_Account_SetOwnerName(account, ownerName);
+    AB_Account_SetOwnerName(account, AB_User_GetUserName(u));
 
     AB_Account_SetAccountNumber(account, accountId);
     if (accountName)

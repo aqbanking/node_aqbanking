@@ -39,7 +39,7 @@ using namespace std;
 
 int UB::Helper::init(void) {
   this->gui = GWEN_Gui_CGui_new();
-  this->ab = AB_Banking_new("unholy_banking", 0, AB_BANKING_EXTENSION_NONE);
+  this->ab = AB_Banking_new("aqhbci-tool", 0, AB_BANKING_EXTENSION_NONE);
 
   GWEN_Gui_SetGui(this->gui);
 
@@ -56,7 +56,6 @@ int UB::Helper::init(void) {
   }
 
   //GWEN_Gui_SetGetPasswordFn(this->gui, CUSTOM_GETPASSWORD_FN);
-  // TODO fix me
   //GWEN_Gui_SetCheckCertFn(this->gui, CUSTOM_CHECKCERT_FN);
   return 0;
 }
@@ -128,13 +127,8 @@ v8::Local<v8::Array> UB::Helper::transactions(AB_ACCOUNT * a, v8::Isolate * isol
   v8::EscapableHandleScope scope(isolate);
   v8::Local<v8::Array> res = v8::Array::New(isolate);
 
-  if (!a) {
-    // no account found
-    return scope.Escape(res);
-  }
-
-  GWEN_TIME * gwTime;
-  const char * dateFrom = NULL, * dateTo = NULL;
+  // no account found
+  if (!a) return scope.Escape(res);
 
   AB_JOB * job = 0;
   AB_JOB_LIST2 * jl = 0;
@@ -142,15 +136,8 @@ v8::Local<v8::Array> UB::Helper::transactions(AB_ACCOUNT * a, v8::Isolate * isol
   AB_IMEXPORTER_ACCOUNTINFO * ai;
 
   job = AB_JobGetTransactions_new(a);
-  if (dateFrom != NULL) {
-    gwTime = GWEN_Time_fromString(dateFrom, "YYYYMMDD");
-    AB_JobGetTransactions_SetFromTime(job, gwTime);
-  }
-  if (dateTo != NULL) {
-    gwTime = GWEN_Time_fromString(dateTo, "YYYYMMDD");
-    AB_JobGetTransactions_SetToTime(job, gwTime);
-  }
   if (AB_Job_CheckAvailability(job)) {
+    cout << "AB_Job_CheckAvailability failed" << endl;
     return scope.Escape(res);
   }
 
@@ -158,15 +145,24 @@ v8::Local<v8::Array> UB::Helper::transactions(AB_ACCOUNT * a, v8::Isolate * isol
   AB_Job_List2_PushBack(jl, job);
   ctx = AB_ImExporterContext_new();
   if (AB_Banking_ExecuteJobs(ab, jl, ctx)) {
+    cout << "AB_Banking_ExecuteJobs failed" << endl;
     return scope.Escape(res);
   }
 
   ai = AB_ImExporterContext_GetFirstAccountInfo (ctx);
   while(ai) {
+
+    // TODO DEBUG
+    cout << "ai" << endl;
+
     int cnt = 0;
     const AB_TRANSACTION * t;
     t = AB_ImExporterAccountInfo_GetFirstTransaction(ai);
     while(t) {
+
+      //TODO DEBUG
+      cout << "t" << endl;
+
       const AB_VALUE *v;
       //AB_TRANSACTION_STATUS state;
       v = AB_Transaction_GetValue(t);

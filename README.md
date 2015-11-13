@@ -13,6 +13,9 @@ Make sure you run the latest nodejs version:
 
 You can compile and install gwenhywfar and aqbanking from source:
 
+
+sudo aptitude install libgcrypt-dev libgnutls28-dev libgtk2.0-dev libgtk-3-dev libxmlsec1-dev
+
     $ export ACLOCAL=$(which aclocal) && export AUTOMAKE=$(which automake)
     $ git submodule update --init
     $ cd gwenhywfar \
