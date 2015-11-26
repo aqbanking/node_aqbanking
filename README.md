@@ -1,4 +1,4 @@
-# Unholy Banking
+# NodeJS AqBanking
 
 Aqbanking wrapper plugin for nodejs
 
